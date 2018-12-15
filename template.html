@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+  <head>
+    <title>Pusher: /r/{{ subreddit }}</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="shortcut icon" href="/img/icon.png">
+  </head>
+  <body style="height: 100%;">
+    <nav>
+      <div class="nav-wrapper green darken-4">
+        <a href="#!" class="brand-logo center" style="font-size: 20px; cursor: pointer;">Pusher</a>
+        <ul class="left hide-on-med-and-down">
+          <li><a href="#!" id="utc" style="cursor: pointer;"></a></li>
+        </ul>
+        <ul class="right hide-on-med-and-down">
+          {% if loggedin %}
+            <ul id="dropdown-logout" class="dropdown-content">
+              <li class="green darken-4"><a href="#!" id="back">Active</a></li>
+              <li class="green darken-4"><a href="#!" id="idle">Idle</a></li>
+              <li class="green darken-4"><a href="#!" id="busy">Busy</a></li>
+              <li class="divider"></li>
+              <li class="green darken-4"><a href="/logout/">Logout</a></li>
+            </ul>
+            <li><a class="dropdown-trigger" href="#!" data-target="dropdown-logout">{{ loggedin }}<i class="material-icons right">arrow_drop_down</i></a></li>
+          {% else %}
+            <li><a href="{{ auth }}">Login</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+    {% block content %}
+      
+    {% endblock %}
+  </body>
+  <script src="/js/site.js"></script>
+  {% block footer %}
+
+  {% endblock %}
+</html>

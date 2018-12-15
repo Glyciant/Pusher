@@ -1,0 +1,49 @@
+/* Edit Navbar and Dropdown Content */
+nav, nav .nav-wrapper i, nav a.button-collapse i {
+    height: 50px;
+    line-height: 50px;
+}
+
+.nav-wrapper .dropdown-content:not(.autocomplete-content) {
+    top: 50px !important;
+}
+
+.dropdown-content:not(.autocomplete-content) li:not(.divider), .dropdown-content:not(.autocomplete-content) li:not(.divider):hover, .dropdown-content:not(.autocomplete-content) li:not(.divider).active, .dropdown-content:not(.autocomplete-content) li:not(.divider).selected, .dropdown-content:not(.autocomplete-content) li:not(.divider).active.selected {
+    min-height: 40px;
+    line-height: 40px;
+}
+
+.dropdown-content:not(.autocomplete-content):not(.select-dropdown) li a, .dropdown-content:not(.autocomplete-content):not(.select-dropdown) li span, .select-wrapper span.caret {
+    color: #fff;
+    padding: 9px 16px;
+}
+
+/* Custom Body Colour */
+body {
+  background-color: #EFEEF1;
+}
+
+[type="checkbox"].filled-in:checked+span:not(.lever):after {
+    border: 2px solid #1B5E20;
+    background-color: #1B5E20;
+}
+
+tr {
+    border: none;
+}
+
+th, td {
+    padding: 5px;
+}
+
+:not(.nav-wrapper, .dropdown-content)>ul:not(.browser-default) {
+    padding-left: 40px;
+}
+
+:not(.nav-wrapper, .dropdown-content)>ul:not(.browser-default), :not(.nav-wrapper, .dropdown-content)>ul:not(.browser-default)>li {
+    list-style-type: initial;
+}
+
+h1, h2 {
+    font-size: 2.92rem;
+}

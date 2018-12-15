@@ -1,0 +1,86 @@
+<div class="row" style="margin: 0;" id="{{ id }}">
+    <div class="col s12" style="padding: 0;">
+        <div class="card">
+            <div class="card-content">
+                <div class="row" style="margin: 0;">
+                    <div class="col s12" style="margin-bottom: 10px;">
+                        <div class="left" style="width: calc(100% - 260px);">
+                            <h5 class="truncate" style="position: relative; top: 5px; width: 100%; height: 33px; margin: 0 0 10px 0;"><a href="https://reddit.com/user/{{ author }}" target="_blank" class="black-text">{{ author }}</a></h5>
+                            <p>Submitted on {{ timestamp|date('d/m/Y') }} at {{ timestamp|date('H:i:s') }} UTC</p>
+                            {% if edited %}
+                                <p>Edited</p>
+                            {% else %}
+                                <p>Not Edited</p>
+                            {% endif %}
+                        </div>
+                        <div class="right">
+                            <a class="btn-floating waves-effect waves-light orange darken-2 white-text tooltipped right" data-position="top" data-delay="50" data-tooltip="Unlock" id="unlock" data-id="t3_{{ id }}" style="margin: 2px 5px; {% if !locked %} display: none; {% endif %}"><i class="material-icons">forum</i></a>
+                            <a class="btn-floating waves-effect waves-light orange darken-2 white-text tooltipped right" data-position="top" data-delay="50" data-tooltip="Lock" id="lock" data-id="t3_{{ id }}" style="margin: 2px 5px; {% if locked %} display: none; {% endif %}"><i class="material-icons">lock</i></a>
+                            <a class="btn-floating waves-effect waves-light red darken-2 white-text tooltipped right" data-position="top" data-delay="50" data-tooltip="Remove" id="remove" data-id="t3_{{ id }}" style="margin: 2px 5px;"><i class="material-icons">close</i></a>
+                            <a class="btn-floating waves-effect waves-light green darken-2 white-text tooltipped right" data-position="top" data-delay="50" data-tooltip="Approve" id="approve" data-id="t3_{{ id }}" style="margin: 2px 5px;"><i class="material-icons">done</i></a>
+                            <a href="{{ url }}" class="btn-floating waves-effect waves-light teal darken-2 white-text tooltipped right" data-position="top" data-delay="50" data-tooltip="Open Link" target="_blank" style="margin: 2px 5px;"><i class="material-icons">call_made</i></a>
+                            <a href="{{ permalink }}" class="btn-floating waves-effect waves-light deep-purple darken-2 white-text tooltipped right" data-position="top" data-delay="50" data-tooltip="Show in Reddit" target="_blank" style="margin: 2px 5px;"><i class="material-icons">open_in_new</i></a>
+                            <br />
+                            <a class="btn-floating waves-effect waves-light blue darken-2 white-text tooltipped right" data-position="bottom" data-delay="50" data-tooltip="Comment" id="comment" data-id="t3_{{ id }}" style="margin: 2px 5px;"><i class="material-icons">comment</i></a>
+                            <a class="btn-floating waves-effect waves-light brown darken-2 white-text tooltipped right" data-position="bottom" data-delay="50" data-tooltip="Flair" id="flair" data-id="t3_{{ id }}" style="margin: 2px 5px;"><i class="material-icons">label</i></a>
+                            <a class="btn-floating waves-effect waves-light grey darken-2 white-text tooltipped right" data-position="bottom" data-delay="50" data-tooltip="Unmark Spoiler" id="unspoiler" data-id="t3_{{ id }}" style="margin: 2px 5px; {% if !spoiler %} display: none; {% endif %}"><i class="material-icons">visibility</i></a>
+                            <a class="btn-floating waves-effect waves-light grey darken-2 white-text tooltipped right" data-position="bottom" data-delay="50" data-tooltip="Mark Spoiler" id="spoiler" data-id="t3_{{ id }}" style="margin: 2px 5px; {% if spoiler %} display: none; {% endif %}"><i class="material-icons">visibility_off</i></a>
+                            <a class="btn-floating waves-effect waves-light pink darken-2 white-text tooltipped right" data-position="bottom" data-delay="50" data-tooltip="Unmark NSFW" id="sfw" data-id="t3_{{ id }}" style="margin: 2px 5px; {% if !nsfw %} display: none; {% endif %}"><i class="material-icons">public</i></a>
+                            <a class="btn-floating waves-effect waves-light pink darken-2 white-text tooltipped right" data-position="bottom" data-delay="50" data-tooltip="Mark NSFW" id="nsfw" data-id="t3_{{ id }}" style="margin: 2px 5px; {% if nsfw %} display: none; {% endif %}"><i class="material-icons">priority_high</i></a>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="left" style="width: calc(100% - 200px);">
+                            <p class="truncate"><strong>{{ title }}</strong></p>
+                        </div>
+                        <div class="right">
+                            <div id="approved-{{ id }}" style="display: inline-block;">
+                                 {% if approved %}
+                                    <i class="material-icons">done</i>
+                                 {% endif %}
+                            </div>
+                            <div id="removed-{{ id }}" style="display: inline-block;">
+                                {% if removed %}
+                                    <i class="material-icons">close</i>
+                                {% endif %}
+                            </div>
+                            <div id="locked-{{ id }}" style="display: inline-block;">
+                                {% if locked %}
+                                    <i class="material-icons">lock</i>
+                                {% endif %}
+                            </div>
+                            <div id="nsfwmarked-{{ id }}" style="display: inline-block;">
+                                {% if nsfw %}
+                                    <i class="material-icons">priority_high</i>
+                                {% endif %}
+                            </div>
+                            <div id="spoilermarked-{{ id }}" style="display: inline-block;">
+                                {% if spoiler %}
+                                    <i class="material-icons">visibility_off</i>
+                                {% endif %}
+                            </div>
+                            <div id="flaired-{{ id }}" style="display: inline-block;">
+                                {% if flair && flair != "No Flair" %}
+                                    <i class="material-icons">label</i>
+                                {% endif %}
+                            </div>
+                            <div id="reported-{{ id }}" style="display: inline-block;">
+                                {% if reports > 0 %}
+                                    <i class="material-icons">flag</i>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% if body %}
+                    <div class="col s12">
+                        <hr />
+                    </div>
+                    <div class="col s12">
+                       {{ body|safe }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

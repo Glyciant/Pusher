@@ -1,0 +1,23 @@
+{
+  "name": "Pusher",
+  "version": "1.0.0",
+  "description": "Pusher allows subreddit moderators to see new comments and posts as they come in, while also showing other information such as active moderators and incoming posts.",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "cookie-parser": "^1.3.5",
+    "express": "^4.13.3",
+    "express-session": "^1.11.3",
+    "node-cron": "^1.2.1",
+    "restler": "^3.4.0",
+    "showdown": "^1.9.0",
+    "swig": "^1.4.2",
+    "ws": "^6.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Glyciant",
+  "license": "ISC"
+}
