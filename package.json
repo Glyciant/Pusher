@@ -1,6 +1,6 @@
 {
   "name": "Pusher",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pusher allows subreddit moderators to see new comments and posts as they come in, while also showing other information such as active moderators and incoming posts.",
   "main": "app.js",
   "dependencies": {

@@ -3,14 +3,11 @@ var config = {};
 config.app = {};
 config.auth = {};
 config.bot = {};
-config.ws = {};
 
 config.app.port = 8080; // Web Server Port
-config.app.base = "http://localhost:" + config.app.port; // Domain
+config.app.base = "http://localhost:" + config.app.port; // Domain (HTTP/HTTPS)
+config.app.ws = "wss://localhost:" + config.app.port; // Domain (WS/WSS)
 config.app.subreddit = ""; // Subreddit
-
-config.ws.port = 8081; // Web Server Port
-config.ws.base = "ws://localhost:" + config.ws.port; // Do Not Edit
 
 config.auth.id = ""; // Reddit Application Client ID
 config.auth.secret = ""; // Reddit Application Client Secret

@@ -37,7 +37,7 @@ converter.setOption("emoji", true);
 app.locals = {
     subreddit: config.app.subreddit,
     auth: config.auth.url,
-    ws: config.ws.base
+    ws: config.app.ws
 };
 
 app.get('*', function(req, res, next) {
@@ -162,7 +162,7 @@ process.on('unhandledRejection', function(reason, p){
 });
 
 var ws = new WebSocket.Server({
-    port: config.ws.port
+    server: server
 });
 
 ws.broadcast = function broadcast(data) {
