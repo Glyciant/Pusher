@@ -1,4 +1,8 @@
 $(document).ready(function() {
+    setup();
+});
+
+function setup() {
     var path = $("#wrapper").data("ws"),
         user = $("#wrapper").data("user"),
         ws = new WebSocket(path);
@@ -67,8 +71,17 @@ $(document).ready(function() {
 
     // Report Errors
     ws.onerror = function(err) {
-      console.error("WebSocket Error: " + err);
+        console.error("WebSocket Error: " + err);
     };
+
+    // Reconnect if Socket Fails
+    ws.onclose = function() {
+        ws.send(JSON.stringify({
+            type: "PART",
+            user: user
+        })); 
+        setup();
+    }
 
     // Handle Server Messages
     ws.onmessage = function(message) {
@@ -195,4 +208,4 @@ $(document).ready(function() {
             $("#flaired-" + msg.id).html("<i class=\"material-icons\">label</i>");
         }
     };
-});
+};
