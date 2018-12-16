@@ -73,7 +73,7 @@ $(document).ready(function() {
     // Handle Server Messages
     ws.onmessage = function(message) {
         msg = JSON.parse(message.data);
-    
+
         // Receive PING
         if (msg.type == "PING") {
             ws.send(JSON.stringify({
@@ -81,29 +81,12 @@ $(document).ready(function() {
             }));
         }
 
-        // Receive JOIN
-        if (msg.type == "JOIN") {
-            $("#online-mods").append("<tr id=\"" + msg.user + "\"><th>" + msg.user + "</th><td>Active</td></tr>");
-        }
-
-        // Receive PART
-        if (msg.type == "PART") {
-            $("#online-mods #" + msg.user).remove();
-        }
-
-        // Receive BACK
-        if (msg.type == "BACK") {
-            $("#online-mods #" + msg.user + " td").html("Active");
-        }
-
-        // Receive IDLE
-        if (msg.type == "IDLE") {
-            $("#online-mods #" + msg.user + " td").html("Away");
-        }
-
-        // Receive BUSY
-        if (msg.type == "BUSY") {
-            $("#online-mods #" + msg.user + " td").html("Busy");
+        // Receive JOIN, PART, BACK, IDLE, BUSY
+        if (msg.type == "JOIN" || msg.type == "PART" || msg.type == "BACK" || msg.type == "IDLE" || msg.type == "BUSY") {
+            $("#online-mods").html("");
+            for (var moderator of Object.keys(msg.online)) {
+                $("#online-mods").append("<tr id=\"" + moderator + "\"><th>" + moderator + "</th><td>" + msg.online[moderator] + "</td></tr>");
+            }
         }
 
         // Receive MODQ

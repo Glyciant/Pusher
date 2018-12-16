@@ -173,13 +173,33 @@ ws.broadcast = function broadcast(data) {
     });
 };
 
+// Hold Online Moderators
+var online = {};
+
 ws.on('connection', function(w) {
-    w.on('message', function(msg){
-        ws.broadcast(msg);
+    w.on('message', function(msg) {
         msg = JSON.parse(msg);
+        if (msg.type == "JOIN" || msg.type == "BACK") {
+            online[msg.user] = "Active";
+            msg.online = online;
+        }
+        if (msg.type == "IDLE") {
+            online[msg.user] = "Away";
+            msg.online = online;
+        }
+        if (msg.type == "BUSY") {
+            online[msg.user] = "Busy";
+            msg.online = online;
+        }
+        if (msg.type == "PART") {
+            delete online[msg.user];
+            msg.online = online;
+        }
+        ws.broadcast(JSON.stringify(msg));
     });
 });
 
+// Send Pings
 cron.schedule('0 * * * * *', function() {
     ws.broadcast(JSON.stringify({
         type: "PING"
