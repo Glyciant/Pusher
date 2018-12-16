@@ -88,11 +88,11 @@ $(document).delegate("#preset", "change", function() {
     var preset = $(this).val();
 
     if (!preset) {
-        $("#comment-text").html("");
+        $("#comment-text").val("");
         M.textareaAutoResize($("#comment-text"));
     }
     else {
-        $("#comment-text").html($("#removal-header").html() + "\n" + preset + "\n" + $("#removal-footer").html());
+        $("#comment-text").val($("#removal-header").html() + "\n" + preset + "\n" + $("#removal-footer").html());
         M.textareaAutoResize($("#comment-text"));
     }
 });
