@@ -180,6 +180,12 @@ ws.on('connection', function(w) {
     });
 });
 
+cron.schedule('0 * * * * *', function() {
+    ws.broadcast(JSON.stringify({
+        type: "PING"
+    }));
+});
+
 // Authenticate with Reddit
 restler.post('https://www.reddit.com/api/v1/access_token', {
     username: config.bot.id,

@@ -74,6 +74,13 @@ $(document).ready(function() {
     ws.onmessage = function(message) {
         msg = JSON.parse(message.data);
     
+        // Receive PING
+        if (msg.type == "PING") {
+            ws.send(JSON.stringify({
+                type: "PONG"
+            }));
+        }
+
         // Receive JOIN
         if (msg.type == "JOIN") {
             $("#online-mods").append("<tr id=\"" + msg.user + "\"><th>" + msg.user + "</th><td>Active</td></tr>");
