@@ -1,0 +1,16 @@
+.dark {
+    background-color: #19191A;
+}
+
+.dark .card, .dark .collapsible-header, .dark .collapsible-body, .dark .tabs, .dark .collection.with-header .collection-header, .dark .collection .collection-item, .dark .card .card-reveal, .dark .modal, .dark .modal-footer {
+    background-color: #212023;
+    color: #B0B0B0 !important;
+}
+
+.dark .green-text.text-darken-4, .dark .black-text {
+    color: #C8E6C9 !important;
+}
+
+body, .card {
+    transition: 0.5s;
+}

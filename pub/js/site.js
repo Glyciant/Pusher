@@ -13,3 +13,14 @@ $(document).ready(function() {
 
     setInterval(utcNow, 1000);
 });
+
+$(document).delegate("#dark-mode", "click", function() {
+    if ($("body").hasClass("dark") === true) {
+        $("body").removeClass("dark");
+        $("#dark-mode").html("Dark Mode");
+    }
+    else {
+        $("body").addClass("dark");
+        $("#dark-mode").html("Light Mode");
+    }
+});
