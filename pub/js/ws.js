@@ -110,6 +110,7 @@ $(document).ready(function() {
         if (msg.type == "POST") {
             $.post("/partial/post/", msg, function(resp) {
                 $("#posts").prepend(resp);
+                $("#" + msg.id).slideDown("slow");
                 if ($("#post-alert").data("audio") === true) {
                     $("#post-alert")[0].play();
                 }
@@ -121,6 +122,7 @@ $(document).ready(function() {
         if (msg.type == "CMMT") {
             $.post("/partial/comment/", msg, function(resp) {
                 $("#comments").prepend(resp);
+                $("#" + msg.id).slideDown("slow");
                 if ($("#comment-alert").data("audio") === true) {
                     $("#comment-alert")[0].play();
                 }
