@@ -19,7 +19,10 @@
                             <a class="btn-floating waves-effect waves-light green darken-2 white-text tooltipped right" data-position="bottom" data-delay="50" data-tooltip="Approve" id="approve" data-id="t1_{{ id }}" style="margin: 0 5px;"><i class="material-icons">done</i></a>
                             <a href="{{ parent }}" class="btn-floating waves-effect waves-light lime darken-2 white-text tooltipped right" data-position="bottom" data-delay="50" data-tooltip="Open Parent" target="_blank" style="margin: 0 5px;"><i class="material-icons">subject</i></a>
                             <a href="{{ permalink }}" class="btn-floating waves-effect waves-light deep-purple darken-2 white-text tooltipped right" data-position="bottom" data-delay="50" data-tooltip="Show in Reddit" target="_blank" style="margin: 0 5px;"><i class="material-icons">open_in_new</i></a>
-                            <br />
+                        </div>
+                        <br />
+                        <br />
+                        <div class="right">
                             <div id="approved-{{ id }}" style="display: inline-block;">
                                  {% if approved %}
                                     <i class="material-icons">done</i>

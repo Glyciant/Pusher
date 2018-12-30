@@ -207,115 +207,120 @@ cron.schedule('0 * * * * *', function() {
 });
 
 // Authenticate with Reddit
-restler.post('https://www.reddit.com/api/v1/access_token', {
-    username: config.bot.id,
-    password: config.bot.secret,
-    data: {
-      grant_type: "password",
-      username: config.bot.username,
-      password: config.bot.password
-    }
-}).on("complete", function(auth) {
-    // Prepare to Hold Handled Posts & Comments
-    var posts = [];
-    var comments = [];
-    // Get New Posts & Comments
-    cron.schedule('*/3 * * * * *', function() {
-        // Get Latest Post from Subreddit
-        restler.get("https://oauth.reddit.com/r/" + config.app.subreddit + "/new.json?limit=1", {
-            accessToken: auth.access_token
-        }).on("complete", function(data) {
-            // Check if Reddit Responded Correctly
-            if (data.data && data.data.children && data.data.children[0] && data.data.children[0].data) {
-                // Make Post Easy to Get
-                var post = data.data.children[0].data;
-                // Check if Post has Been Previously Handled
-                if (posts.indexOf(post.id) === -1) {
-                    // Add Post to Handled List
-                    posts.push(post.id);
-                    ws.broadcast(JSON.stringify({
-                        type: "POST",
-                        id: post.id,
-                        title: post.title,
-                        body: converter.makeHtml(post.selftext),
-                        permalink: "https://redd.it/" + post.id,
-                        author: post.author,
-                        reports: post.mod_reports.length,
-                        flair: post.link_flair_text,
-                        approved: post.approved,
-                        removed: post.removed,
-                        locked: post.locked,
-                        nsfw: post.over_18,
-                        spoiler: post.spoiler,
-                        edited: post.edited,
-                        timestamp: post.created_utc * 1000,
-                        url: post.url
-                    }));
-                }
-            }
-        });
-        // Get Latest Comment from Subreddit
-        restler.get("https://oauth.reddit.com/r/" + config.app.subreddit + "/comments.json?limit=1", {
-            accessToken: auth.access_token
-        }).on("complete", function(data) {
-            // Check if Reddit Responded Correctly
-            if (data.data && data.data.children && data.data.children[0] && data.data.children[0].data) {
-                // Make Comment Easy to Get
-                var comment = data.data.children[0].data;
-                // Check if Comment has Been Previously Handled
-                if (comments.indexOf(comment.id) === -1) {
-                    // Add Comment to Handled List
-                    comments.push(comment.id);
-                    ws.broadcast(JSON.stringify({
-                        type: "CMMT",
-                        id: comment.id,
-                        title: comment.title,
-                        body: converter.makeHtml(comment.body),
-                        permalink: "https://reddit.com/" + comment.permalink,
-                        author: comment.author,
-                        reports: comment.mod_reports.length,
-                        approved: comment.approved,
-                        removed: comment.removed,
-                        parent: comment.link_permalink,
-                        edited: comment.edited,
-                        timestamp: comment.created_utc * 1000
-                    }));
-                }
-            }
-        });
+var auth = {};
+    setInterval(function() {
+        restler.post('https://www.reddit.com/api/v1/access_token', {
+        username: config.bot.id,
+        password: config.bot.secret,
+        data: {
+          grant_type: "password",
+          username: config.bot.username,
+          password: config.bot.password
+        }
+    }).on("complete", function(reddit) {
+        auth = reddit;
     });
+}, 3600)
 
-    // Get Modmail & Mod Queue
-    cron.schedule('*/15 * * * * *', function() {
-        // Get Modqueue Data from Subreddit
-        restler.get("https://oauth.reddit.com/r/" + config.app.subreddit + "/about/modqueue.json", {
-            accessToken: auth.access_token
-        }).on("complete", function(data) {
-            // Check if Reddit Responded Correctly
-            if (data.data && data.data.children) {
-                // Store Data
-                var posts = 0,
-                    comments = 0,
-                    total = data.data.children.length;
-
-                // Get Posts and Comments
-                for (var submission of data.data.children) {
-                    if (submission.kind == "t1") {
-                        comments += 1;
-                    }
-                    else {
-                        posts += 1;
-                    }
-                }
-
+// Prepare to Hold Handled Posts & Comments
+var posts = [];
+var comments = [];
+// Get New Posts & Comments
+cron.schedule('*/3 * * * * *', function() {
+    // Get Latest Post from Subreddit
+    restler.get("https://oauth.reddit.com/r/" + config.app.subreddit + "/new.json?limit=1", {
+        accessToken: auth.access_token
+    }).on("complete", function(data) {
+        // Check if Reddit Responded Correctly
+        if (data.data && data.data.children && data.data.children[0] && data.data.children[0].data) {
+            // Make Post Easy to Get
+            var post = data.data.children[0].data;
+            // Check if Post has Been Previously Handled
+            if (posts.indexOf(post.id) === -1) {
+                // Add Post to Handled List
+                posts.push(post.id);
                 ws.broadcast(JSON.stringify({
-                    type: "MODQ",
-                    posts: posts,
-                    comments: comments,
-                    total: total
+                    type: "POST",
+                    id: post.id,
+                    title: post.title,
+                    body: converter.makeHtml(post.selftext),
+                    permalink: "https://redd.it/" + post.id,
+                    author: post.author,
+                    reports: post.mod_reports.length,
+                    flair: post.link_flair_text,
+                    approved: post.approved,
+                    removed: post.removed,
+                    locked: post.locked,
+                    nsfw: post.over_18,
+                    spoiler: post.spoiler,
+                    edited: post.edited,
+                    timestamp: post.created_utc * 1000,
+                    url: post.url
                 }));
             }
-        });
+        }
+    });
+    // Get Latest Comment from Subreddit
+    restler.get("https://oauth.reddit.com/r/" + config.app.subreddit + "/comments.json?limit=1", {
+        accessToken: auth.access_token
+    }).on("complete", function(data) {
+        // Check if Reddit Responded Correctly
+        if (data.data && data.data.children && data.data.children[0] && data.data.children[0].data) {
+            // Make Comment Easy to Get
+            var comment = data.data.children[0].data;
+            // Check if Comment has Been Previously Handled
+            if (comments.indexOf(comment.id) === -1) {
+                // Add Comment to Handled List
+                comments.push(comment.id);
+                ws.broadcast(JSON.stringify({
+                    type: "CMMT",
+                    id: comment.id,
+                    title: comment.title,
+                    body: converter.makeHtml(comment.body),
+                    permalink: "https://reddit.com/" + comment.permalink,
+                    author: comment.author,
+                    reports: comment.mod_reports.length,
+                    approved: comment.approved,
+                    removed: comment.removed,
+                    parent: comment.link_permalink,
+                    edited: comment.edited,
+                    timestamp: comment.created_utc * 1000
+                }));
+            }
+        }
+    });
+});
+
+// Get Modmail & Mod Queue
+cron.schedule('*/15 * * * * *', function() {
+    // Get Modqueue Data from Subreddit
+    restler.get("https://oauth.reddit.com/r/" + config.app.subreddit + "/about/modqueue.json", {
+        accessToken: auth.access_token
+    }).on("complete", function(data) {
+        // Check if Reddit Responded Correctly
+        if (data.data && data.data.children) {
+            // Store Data
+            var posts = 0,
+                comments = 0,
+                total = data.data.children.length;
+
+            // Get Posts and Comments
+            for (var submission of data.data.children) {
+                if (submission.kind == "t1") {
+                    comments += 1;
+                }
+                else {
+                    posts += 1;
+                }
+            }
+
+            ws.broadcast(JSON.stringify({
+                type: "MODQ",
+                posts: posts,
+                comments: comments,
+                total: total
+            }));
+        }
     });
 });
 
@@ -335,6 +340,7 @@ app.post("/action/approve/", function(req, res) {
                 type: "APRV",
                 id: req.body.id
             }));
+            res.sendStatus(200);
         });
     }
     else {
@@ -359,6 +365,7 @@ app.post("/action/remove/", function(req, res) {
                 type: "REMV",
                 id: req.body.id
             }));
+            res.sendStatus(200);
         });
     }
     else {
@@ -382,6 +389,7 @@ app.post("/action/lock/", function(req, res) {
                 type: "LOCK",
                 id: req.body.id
             }));
+            res.sendStatus(200);
         });
     }
     else {
@@ -405,6 +413,7 @@ app.post("/action/unlock/", function(req, res) {
                 type: "ULCK",
                 id: req.body.id
             }));
+            res.sendStatus(200);
         });
     }
     else {
@@ -428,6 +437,7 @@ app.post("/action/nsfw/", function(req, res) {
                 type: "NSFW",
                 id: req.body.id
             }));
+            res.sendStatus(200);
         });
     }
     else {
@@ -451,6 +461,7 @@ app.post("/action/sfw/", function(req, res) {
                 type: "SFWV",
                 id: req.body.id
             }));
+            res.sendStatus(200);
         });
     }
     else {
@@ -474,6 +485,7 @@ app.post("/action/spoiler/", function(req, res) {
                 type: "SPLR",
                 id: req.body.id
             }));
+            res.sendStatus(200);
         });
     }
     else {
@@ -497,6 +509,7 @@ app.post("/action/unspoiler/", function(req, res) {
                 type: "USLR",
                 id: req.body.id
             }));
+            res.sendStatus(200);
         });
     }
     else {
@@ -523,6 +536,7 @@ app.post("/action/flair/", function(req, res) {
                 type: "FLAR",
                 id: req.body.id
             }));
+            res.sendStatus(200);
         });
     }
     else {

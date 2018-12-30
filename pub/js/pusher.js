@@ -140,7 +140,7 @@ $(document).delegate("#posts-toggle", "click", function() {
 });
 
 $(document).delegate("#posts-clear", "click", function() {
-    $("#posts").html();
+    $("#posts").html("");
 });
 
 $(document).delegate("#comments-test", "click", function() {
@@ -159,5 +159,5 @@ $(document).delegate("#comments-toggle", "click", function() {
 });
 
 $(document).delegate("#comments-clear", "click", function() {
-    $("#comments").html();
+    $("#comments").html("");
 });
